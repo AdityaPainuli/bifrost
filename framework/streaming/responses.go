@@ -944,6 +944,9 @@ func (a *Accumulator) processAccumulatedResponsesStreamingChunks(requestID strin
 		if lastChunk.SemanticCacheDebug != nil {
 			data.CacheDebug = lastChunk.SemanticCacheDebug
 		}
+		if lastChunk.GuardrailDebug != nil {
+			data.GuardrailDebug = lastChunk.GuardrailDebug
+		}
 		if lastChunk.Cost != nil {
 			data.Cost = lastChunk.Cost
 		}
@@ -1021,6 +1024,7 @@ func (a *Accumulator) processResponsesStreamingResponse(ctx *schemas.BifrostCont
 				chunk.Cost = bifrost.Ptr(cost)
 			}
 			chunk.SemanticCacheDebug = result.GetExtraFields().CacheDebug
+			chunk.GuardrailDebug = result.GetExtraFields().GuardrailDebug
 		}
 	}
 
