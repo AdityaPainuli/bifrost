@@ -8,6 +8,10 @@ Official Helm charts for deploying [Bifrost](https://github.com/maximhq/bifrost)
 
 ## Changelog
 
+### Upcoming
+
+- Added `bifrost.guardrails.rules[].stream_replay_duration_ms` to configure the maximum replay duration for allowed streams buffered by block-capable output guardrails; smaller streams may finish sooner.
+
 ### 2.1.29
 
 - Added `bifrost.scim.config.provisioningToken` and `claimScimAttributes` to the Okta, Entra, SailPoint, and generic OIDC SCIM providers, so inbound SCIM provisioning can be seeded declaratively instead of via the dashboard. Both render into `scim_config.config`. Generate a token with `openssl rand -base64 32 | tr '+/' '-_' | tr -d '='` (supports `env.` prefix).
