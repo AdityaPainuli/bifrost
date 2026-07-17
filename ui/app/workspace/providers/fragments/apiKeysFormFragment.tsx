@@ -2,6 +2,7 @@ import { SecretVarInput } from "@/components/ui/secretVarInput";
 import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { ModelMultiselect } from "@/components/ui/modelMultiselect";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -60,6 +61,7 @@ export function ApiKeyFormFragment({ control, providerName, baseProviderType, fo
 	const isVLLM = effectiveProvider === "vllm";
 	const isOllama = effectiveProvider === "ollama";
 	const isSGL = effectiveProvider === "sgl";
+	const isOpenAI = effectiveProvider === "openai";
 	const isKeylessProvider = isOllama || isSGL;
 	const supportsBatchAPI = BATCH_SUPPORTED_PROVIDERS.includes(effectiveProvider);
 
@@ -236,6 +238,36 @@ export function ApiKeyFormFragment({ control, providerName, baseProviderType, fo
 							<FormControl>
 								<SecretVarInput placeholder="API Key or env.MY_KEY" type="text" {...field} />
 							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+			)}
+			{isOpenAI && (
+				<FormField
+					control={control}
+					name={`key.openai_key_config.region`}
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>Data Residency Region</FormLabel>
+							<Select
+								value={field.value || "us"}
+								onValueChange={(value) => field.onChange(value === "us" ? "" : value)}
+							>
+								<FormControl>
+									<SelectTrigger data-testid="key-openai-region-select" className="w-full">
+										<SelectValue placeholder="Default (Global / US)" />
+									</SelectTrigger>
+								</FormControl>
+								<SelectContent>
+									<SelectItem value="us">Default (Global / US)</SelectItem>
+									<SelectItem value="eu">European Union (eu.api.openai.com)</SelectItem>
+								</SelectContent>
+							</Select>
+							<FormDescription>
+								Route requests made with this key to OpenAI&apos;s regional-processing endpoint and apply the region&apos;s
+								uplifted pricing. Overrides the provider-level region. Requires an eligible region-scoped OpenAI Project key.
+							</FormDescription>
 							<FormMessage />
 						</FormItem>
 					)}
